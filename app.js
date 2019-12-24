@@ -1,7 +1,27 @@
-const http = require('http');
+// const http = require('http'); // it is no longer needed on express module
 
-console.log(routes.someText);
+const express = require('express');
+const bodyParser = require('body-parser');
 
-const server = http.createServer();
 
-server.listen(3000);
+const app = express();
+app.use(bodyParser.urlencoded({extended:false}));
+
+app.use('/add-product', (req, res, next) => {
+    console.log('hello');
+    res.send(`<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Product</button></input></form>`)
+});
+
+app.use('/product', (req, res, next) => {
+    console.log(req.body);
+    res.redirect('/');
+});
+
+app.use('/', (req, res, next) => {
+ 
+    res.send('<h1>hello from express</h1>')
+});
+
+// const server = http.createServer(app); // app.listen() replace this code
+
+app.listen(3000);
